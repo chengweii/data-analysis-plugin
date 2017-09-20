@@ -39,4 +39,8 @@ $("#page-index .edit-btn").click(function () {
 	location.href = "edit.html?id=7";
 });
 
+$("#page-index .relation-btn").click(function () {
+	location.href = "relation.html?id=7";
+});
+
 util.bindTitleTip('title-tip');
