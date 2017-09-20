@@ -1,5 +1,5 @@
 var id = util.getQueryString("id");
-alert(id);
+console.log(id);
 $("#page-edit .back-btn").click(function () {
 	location.href = "main.html";
 });
