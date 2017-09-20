@@ -1,0 +1,46 @@
+{
+	"manifest_version": 2,
+	"name": "数据分析助手",
+	"version": "1.0.0",
+	"description": "数据分析助手",
+	"icons": {
+		"16": "img/icon.png",
+		"48": "img/icon.png",
+		"128": "img/icon.png"
+	},
+	"background": {
+		"page": "background.html"
+	},
+	"browser_action": {
+		"default_icon": "img/icon.png",
+		"default_title": "数据分析助手"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"<all_urls>"
+			],
+			"js": [
+				"js/jquery-3.2.1.min.js",
+				"js/settings.js",
+				"js/math.min.js",
+				"js/util.js"
+			],
+			"css": [
+				"css/custom.css"
+			],
+			"run_at": "document_start"
+		}
+	],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self' 'unsafe-eval'",
+	"permissions": [
+		"contextMenus",
+		"tabs",
+		"notifications",
+		"webRequest",
+		"webRequestBlocking",
+		"storage",
+		"http://*/*",
+		"https://*/*"
+	]
+}
