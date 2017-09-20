@@ -29,11 +29,14 @@ var node = math.parse('roi_month * ss + dd');
 showNode(node);
 var newexpression = transform(node);
 
-$(".card-header .title").click(function () {
+$("#page-index .card-header .title").click(function () {
 	$(".card-content").hide();
 	$(".card-header .title").removeClass("card-selected");
 	$(this).addClass("card-selected");
 	$("." + $(this).attr("card-class")).show();
+});
+$("#page-index .edit-btn").click(function () {
+	location.href = "edit.html?id=7";
 });
 
 util.bindTitleTip('title-tip');
