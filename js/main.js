@@ -47,4 +47,8 @@ $("#page-index .detail-btn").click(function () {
 	location.href = "detail.html?id=7";
 });
 
+$("#page-index .document-btn").click(function () {
+	location.href = "document.html?id=7";
+});
+
 util.bindTitleTip('title-tip');
