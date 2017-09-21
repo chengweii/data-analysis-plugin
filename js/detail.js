@@ -1,9 +1,8 @@
 var id = util.getQueryString("id");
 console.log(id);
-$("#page-relation .back-btn").click(function () {
+$("#page-detail .back-btn").click(function () {
 	location.href = "main.html";
 });
-
 
 var chrodChart = echarts.init(document.getElementById('chrod-chart'),e_macarons);
 
@@ -165,3 +164,60 @@ var chrodOption = {
 };
 
 chrodChart.setOption(chrodOption);
+
+var lineChart = echarts.init(document.getElementById('line-chart'),e_macarons);
+
+var lineOption = {
+	    title : {
+	        text: '未来一周气温变化',
+	        subtext: '纯属虚构'
+	    },
+	    tooltip : {
+	        trigger: 'axis'
+	    },
+	    legend: {
+	        data:['最高气温']
+	    },
+	    toolbox: {
+	        show : true,
+	        feature : {
+	            mark : {show: true},
+	            magicType : {show: true, type: ['line', 'bar']}
+	        }
+	    },
+	    calculable : true,
+	    xAxis : [
+	        {
+	            type : 'category',
+	            boundaryGap : false,
+	            data : ['周一','周二','周三','周四','周五','周六','周日']
+	        }
+	    ],
+	    yAxis : [
+	        {
+	            type : 'value',
+	            axisLabel : {
+	                formatter: '{value} °C'
+	            }
+	        }
+	    ],
+	    series : [
+	        {
+	            name:'最高气温',
+	            type:'line',
+	            data:[11, 11, 15, 13, 12, 13, 10],
+	            markPoint : {
+	                data : [
+	                    {type : 'max', name: '最大值'},
+	                    {type : 'min', name: '最小值'}
+	                ]
+	            },
+	            markLine : {
+	                data : [
+	                    {type : 'average', name: '平均值'}
+	                ]
+	            }
+	        }
+	    ]
+	};
+lineChart.setOption(lineOption);

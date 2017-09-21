@@ -43,4 +43,8 @@ $("#page-index .relation-btn").click(function () {
 	location.href = "relation.html?id=7";
 });
 
+$("#page-index .detail-btn").click(function () {
+	location.href = "detail.html?id=7";
+});
+
 util.bindTitleTip('title-tip');
