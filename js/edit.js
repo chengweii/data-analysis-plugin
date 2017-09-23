@@ -4,16 +4,9 @@ $("#page-edit .back-btn").click(function() {
 	location.href = "main.html";
 });
 
-var i=1;
-$("#save-data").click(function(){
-	var row = [];
-	row.push([ {
-		'name' : 'id',
-		'value' : i
-	}, {
-		'name' : 'name',
-		'value' : 'ceshi'+i
-	} ]);
-	assistantDb.insert('analysis_quota', row);
-	i++;
+$("#save-data").click(function() {
+	util.dao.insert('analysis_goal', {
+		name : '似的发射点',
+		detail : 'dsdsfdsd士大夫'
+	});
 });

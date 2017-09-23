@@ -110,6 +110,22 @@ window.util = {
 		element.mouseout(function() {
 			$("#" + tipId).hide();
 		});
+	},
+	dao : {
+		execute : function(sql, params, callback) {
+			return assistantDb.query(sql, callback, params);
+		},
+		insert : function(table, row) {
+			var row_data = [];
+			var row_temp = [];
+			for ( var p in row) {
+				row_temp.push({
+					name : p,
+					value : row[p]
+				});
+			}
+			row_data.push(row_temp);
+			return assistantDb.insert(table, row_data);
+		}
 	}
 };
-

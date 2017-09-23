@@ -204,43 +204,115 @@ function initDb() {
 		table : 'analysis_quota',
 		properties : [ {
 			name : 'id',
-			type : 'INT PRIMARY KEY ASC'
+			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
 		}, {
-			name : 'name',
+			name : 'name_cn',
+			type : 'char'
+		}, {
+			name : 'name_en',
+			type : 'char'
+		}, {
+			name : 'category',
+			type : 'char'
+		}, {
+			name : 'unit',
+			type : 'char'
+		}, {
+			name : 'expression',
+			type : 'char'
+		}, {
+			name : 'period',
+			type : 'char'
+		}, {
+			name : 'coordinate',
+			type : 'char'
+		}, {
+			name : 'reference_value',
+			type : 'char'
+		}, {
+			name : 'remark',
+			type : 'char'
+		}, {
+			name : 'document_url',
 			type : 'char'
 		} ]
 	}, {
 		table : 'analysis_factor',
 		properties : [ {
 			name : 'id',
-			type : 'INT PRIMARY KEY ASC'
+			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
 		}, {
-			name : 'name',
+			name : 'name_cn',
+			type : 'char'
+		}, {
+			name : 'name_en',
+			type : 'char'
+		}, {
+			name : 'category',
+			type : 'char'
+		}, {
+			name : 'unit',
+			type : 'char'
+		}, {
+			name : 'expression',
+			type : 'char'
+		}, {
+			name : 'period',
+			type : 'char'
+		}, {
+			name : 'coordinate',
+			type : 'char'
+		}, {
+			name : 'reference_value',
+			type : 'char'
+		}, {
+			name : 'remark',
+			type : 'char'
+		}, {
+			name : 'document_url',
 			type : 'char'
 		} ]
 	}, {
 		table : 'analysis_goal',
 		properties : [ {
 			name : 'id',
-			type : 'INT PRIMARY KEY ASC'
+			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
 		}, {
 			name : 'name',
+			type : 'char'
+		}, {
+			name : 'detail',
+			type : 'char'
+		}, {
+			name : 'remark',
+			type : 'char'
+		}, {
+			name : 'document_url',
 			type : 'char'
 		} ]
 	}, {
 		table : 'analysis_step',
 		properties : [ {
 			name : 'id',
-			type : 'INT PRIMARY KEY ASC'
+			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
 		}, {
 			name : 'name',
+			type : 'char'
+		}, {
+			name : 'content',
+			type : 'char'
+		}, {
+			name : 'attentions',
 			type : 'char'
 		} ]
 	}, {
 		table : 'analysis_quota_history',
 		properties : [ {
 			name : 'id',
-			type : 'INT PRIMARY KEY ASC'
+			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
+		}, {
+			name : 'coordinate',
+			type : 'char'
 		}, {
 			name : 'value',
 			type : 'char'
@@ -249,7 +321,10 @@ function initDb() {
 		table : 'analysis_factor_history',
 		properties : [ {
 			name : 'id',
-			type : 'INT PRIMARY KEY ASC'
+			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
+		}, {
+			name : 'coordinate',
+			type : 'char'
 		}, {
 			name : 'value',
 			type : 'char'
@@ -258,19 +333,19 @@ function initDb() {
 		table : 'analysis_relations',
 		properties : [ {
 			name : 'id',
-			type : 'INT PRIMARY KEY ASC'
+			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
 		}, {
 			name : 'object_id',
-			type : 'INT'
+			type : 'INTEGER'
 		}, {
 			name : 'object_type',
-			type : 'INT'
+			type : 'INTEGER'
 		}, {
 			name : 'relation_object_id',
-			type : 'INT'
+			type : 'INTEGER'
 		}, {
 			name : 'relation_object_type',
-			type : 'INT'
+			type : 'INTEGER'
 		} ]
 	} ];
 	if (!assistantDb.check(dbTable)) {
