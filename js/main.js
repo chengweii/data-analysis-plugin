@@ -50,7 +50,7 @@ function renderGoalData(rows, table) {
 
 	$("." + type + "-card .edit-btn").click(
 			function() {
-				location.href = type + "_edit.html?id="
+				location.href = type + "_edit.html?opreate=edit&id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .relation-btn").click(
@@ -60,7 +60,8 @@ function renderGoalData(rows, table) {
 			});
 	$("." + type + "-card .document-btn").click(
 			function() {
-				location.href = "document.html?type=" + type + "&id="
+				location.href = "document.html?type=" + type + "&table="
+						+ table + "&id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .remove-btn").click(
@@ -113,7 +114,7 @@ function renderQuotaData(rows, table) {
 
 	$("." + type + "-card .edit-btn").click(
 			function() {
-				location.href = type + "_edit.html?id="
+				location.href = type + "_edit.html?opreate=edit&id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .relation-btn").click(
@@ -128,7 +129,8 @@ function renderQuotaData(rows, table) {
 			});
 	$("." + type + "-card .document-btn").click(
 			function() {
-				location.href = "document.html?type=" + type + "&id="
+				location.href = "document.html?type=" + type + "&table="
+						+ table + "&id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .remove-btn").click(
@@ -181,7 +183,7 @@ function renderFactorData(rows, table) {
 
 	$("." + type + "-card .edit-btn").click(
 			function() {
-				location.href = type + "_edit.html?id="
+				location.href = type + "_edit.html?opreate=edit&id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .relation-btn").click(
@@ -196,7 +198,8 @@ function renderFactorData(rows, table) {
 			});
 	$("." + type + "-card .document-btn").click(
 			function() {
-				location.href = "document.html?type=" + type + "&id="
+				location.href = "document.html?type=" + type + "&table="
+						+ table + "&id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .remove-btn").click(
@@ -237,7 +240,7 @@ function renderStepData(rows, table) {
 
 	$("." + type + "-card .edit-btn").click(
 			function() {
-				location.href = type + "_edit.html?id="
+				location.href = type + "_edit.html?opreate=edit&id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .remove-btn").click(
@@ -278,13 +281,11 @@ $("#page-index .card-header .title").click(function() {
 	$(this).addClass("card-selected");
 	$("." + $(this).attr("card-class")).show();
 });
+
 $("#page-index .btn-add").click(function() {
-	util.dao.insert('analysis_step', {
-		name : '似的发射点' + (new Date()),
-		content : 'dfsdfsdfsd',
-		attentions : '营运能力'
-	});
-	location.href = "main.html";
+	var card_class = $(".card-selected").attr("card-class");
+	var card_name = card_class.replace('-card', '');
+	location.href = card_name + "_edit.html";
 });
 
 var typeFrom = util.getQueryString("typeFrom");

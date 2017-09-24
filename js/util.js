@@ -118,8 +118,8 @@ window.util = {
 		element.mouseover(function() {
 			var position = util.getMousePosition();
 			var tip = $("#" + tipId);
-			tip[0].style.left = position.x + "px";
-			tip[0].style.top = position.y + "px";
+			tip[0].style.left = position.x + 5 + "px";
+			tip[0].style.top = position.y + 5 + "px";
 			tip.html($(this).attr("title-content"));
 			tip.show();
 		});
