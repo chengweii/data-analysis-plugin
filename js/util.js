@@ -18,6 +18,22 @@
 	return format;
 }
 
+$.fn.serializeObject = function() {
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function() {
+		if (o[this.name] !== undefined) {
+			if (!o[this.name].push) {
+				o[this.name] = [ o[this.name] ];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
+};
+
 window.util = {
 	openNewTab : function(url) {
 		chrome.tabs.create({
@@ -115,7 +131,7 @@ window.util = {
 		execute : function(sql, params, callback) {
 			return assistantDb.query(sql, callback, params);
 		},
-		insert : function(table, row) {
+		insert : function(table, row, callback) {
 			var row_data = [];
 			var row_temp = [];
 			for ( var p in row) {
@@ -125,7 +141,19 @@ window.util = {
 				});
 			}
 			row_data.push(row_temp);
-			return assistantDb.insert(table, row_data);
+			return assistantDb.insert(table, row_data, callback);
+		},
+		update : function(table, row, id, callback) {
+			var sql = "update " + table + " set ";
+			var params = [];
+			for ( var p in row) {
+				sql = sql + p + " = ?,";
+				params.push(row[p]);
+			}
+			sql = sql.substring(0, sql.length - 1);
+			sql = sql + " where id = ?";
+			params.push(id);
+			return assistantDb.query(sql, callback, params);
 		}
 	}
 };

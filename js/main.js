@@ -44,7 +44,7 @@ function renderGoalData(rows, table) {
 		var detail = rows[index]['detail'];
 		$(tds[1]).find("span").html(detail).attr("title-content", detail);
 		var remark = rows[index]['remark'];
-		$(tds[2]).find("span").html(detail).attr("title-content", remark);
+		$(tds[2]).find("span").html(remark).attr("title-content", remark);
 		tbody.append(temp);
 	}
 
@@ -213,7 +213,7 @@ function renderFactorData(rows, table) {
 }
 
 function renderStepData(rows, table) {
-	var type = "thinking";
+	var type = "step";
 	var template = $("." + type + "-card table tbody tr");
 	var tbody = $("." + type + "-card table tbody");
 	tbody.html("");
@@ -230,7 +230,8 @@ function renderStepData(rows, table) {
 		var content = rows[index]['content'];
 		$(tds[1]).find("span").html(content).attr("title-content", content);
 		var attentions = rows[index]['attentions'];
-		$(tds[2]).find("span").html(attentions).attr("title-content", attentions);
+		$(tds[2]).find("span").html(attentions).attr("title-content",
+				attentions);
 		tbody.append(temp);
 	}
 
@@ -285,3 +286,14 @@ $("#page-index .btn-add").click(function() {
 	});
 	location.href = "main.html";
 });
+
+var typeFrom = util.getQueryString("typeFrom");
+function showCardContent(typeFrom) {
+	if (typeFrom) {
+		$(".card-content").hide();
+		$(".card-header .title").removeClass("card-selected");
+		$("." + typeFrom + "-title").addClass("card-selected");
+		$("." + typeFrom + "-card").show();
+	}
+}
+showCardContent(typeFrom);
