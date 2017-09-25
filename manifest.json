@@ -15,24 +15,6 @@
 		"default_icon": "img/icon.png",
 		"default_title": "数据分析助手"
 	},
-	"content_scripts": [
-		{
-			"matches": [
-				"<all_urls>"
-			],
-			"js": [
-				"js/jquery-3.2.1.min.js",
-				"js/settings.js",
-				"js/math.min.js",
-				"js/echarts.js",
-				"js/util.js"
-			],
-			"css": [
-				"css/custom.css"
-			],
-			"run_at": "document_start"
-		}
-	],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self' 'unsafe-eval'",
 	"permissions": [
 		"contextMenus",

@@ -1,20 +1,20 @@
 $("#page-edit .back-btn").click(function() {
-	location.href = "main.html?typeFrom=goal";
+	location.href = "main.html?typeFrom=step";
 });
 
 var save_fn;
 var opreate = util.getQueryString("opreate");
-var table = 'analysis_goal';
+var table = 'analysis_step';
 if (opreate == 'edit') {
-	$("h1.title").html("编辑目标");
+	$("h1.title").html("编辑步骤");
 	var id = util.getQueryString("id");
 	function bindData() {
 		var query_sql = 'select * from ' + table + ' where id =  ?';
 		util.dao.execute(query_sql, [ id ], function(tx, res) {
 			if (res.rows.length) {
 				$(".name").val(res.rows[0].name);
-				$(".detail").val(res.rows[0].detail);
-				$(".remark").text(res.rows[0].remark);
+				$(".content").val(res.rows[0].content);
+				$(".attentions").text(res.rows[0].attentions);
 			}
 		});
 	}
@@ -22,15 +22,15 @@ if (opreate == 'edit') {
 	save_fn = function() {
 		var data = $(".form-control").serializeObject();
 		util.dao.update(table, data, id, function() {
-			location.href = "main.html?typeFrom=goal";
+			location.href = "main.html?typeFrom=step";
 		});
 	};
 } else {
-	$("h1.title").html("添加目标");
+	$("h1.title").html("添加步骤");
 	save_fn = function() {
 		var data = $(".form-control").serializeObject();
 		util.dao.insert(table, data, function() {
-			location.href = "main.html?typeFrom=goal";
+			location.href = "main.html?typeFrom=step";
 		});
 	};
 }
