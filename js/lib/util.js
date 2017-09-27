@@ -124,8 +124,21 @@ window.util = {
 			tip.show();
 		});
 		element.mouseout(function() {
-			$("#" + tipId).hide();
+			$("#" + tipId).remove();
 		});
+	},
+	showToast : function(msg) {
+		var tipId = 'title-tip';
+		var toast = $("<div id='" + tipId + "'></div>");
+		$('body').append(toast);
+		var position = util.getMousePosition();
+		toast[0].style.left = position.x + 5 + "px";
+		toast[0].style.top = position.y + 5 + "px";
+		toast.html(msg);
+		toast.show();
+		setTimeout(function() {
+			toast.remove();
+		},2000);
 	},
 	unique : function(array) {
 		var res = [];

@@ -123,5 +123,10 @@ function bindFactorList() {
 		$(".right-content-default").hide();
 		$(".right-content-factor").show();
 	});
+	
+	$(".expression")[0].onselect=function() {
+		var msg = $(this).val().substring(this.selectionStart,this.selectionEnd);
+		util.showToast(msg);
+	};
 }
 bindFactorList();

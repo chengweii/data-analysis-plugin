@@ -21,7 +21,7 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">test</label>
-							<textarea rows="3" cols="20" class="form-control remark"></textarea>
+							<textarea rows="3" cols="20" class="form-control remark" onselect="inputSelect(this)"></textarea>
 						</div>
 					</div>
 				</div>
@@ -179,6 +179,11 @@
   myarr[1] = "love";
   myarr[2] = "JavaScript";
   document.write(myarr.join("','"));
+
+	function inputSelect(that){
+		alert($(that).val().substring(that.selectionStart,that.selectionEnd));
+		console.dir(that);
+	}
 	</script>
 </body>
 
