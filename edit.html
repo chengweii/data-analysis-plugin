@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<title>数据分析助手</title>
+<title>test</title>
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="css/custom.css" type="text/css" />
@@ -27,79 +27,15 @@
 							d="M896 544H250.4l242.4 242.4L448 832 173.6 557.6 128 512l45.6-45.6L448 192l45.6 45.6L250.4 480H896v64z"
 							p-id="2514"></path></svg>
 				</button>
-				<h1 class="title">编辑指标</h1>
+				<h1 class="title">test</h1>
 			</div>
 			<div class="col-lg-6 col-md-12">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">中文名称</label> <input type="text"
-								class="form-control" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">英文名称</label> <input type="text"
-								class="form-control" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">指标分类</label> <input type="text"
-								class="form-control" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">单位</label> <input type="text"
-								class="form-control" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">算法</label> <textarea rows="3" cols="20"
-								class="form-control"></textarea>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">时间周期</label> <input type="text"
-								class="form-control" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">时间坐标</label> <input type="text"
-								class="form-control" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">参考值</label> <input type="text"
-								class="form-control" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
 							<label class="control-label">备注</label>
 							<textarea rows="3" cols="20"
-								class="form-control"></textarea>
+								class="form-control remark"></textarea>
 						</div>
 					</div>
 				</div>
@@ -110,13 +46,70 @@
 				</div>
 			</div>
 			<div class="col-lg-6 col-md-12">
-				<img src="img/bg.jpg" class="bg-img" alt="">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group label-floating">
+							<input type="text" class="form-control" />
+						</div>
+					</div>
+				</div>
+				<div class="card-content goal-card table-responsive">
+					<table class="table table-hover">
+						<thead class="text-primary">
+							<tr>
+								<th>name_cn</th>
+								<th>name_en</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr name-en="dddddd1">
+								<td>werwer1</td>
+								<td>dddddd1</td>
+							</tr>
+							<tr name-en="dddddd2">
+								<td>werwer2</td>
+								<td>dddddd2</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 
 	</div>
 
-	<script type="text/javascript" src="js/edit.js"></script>
+	<script type="text/javascript">
+	(function ($) {
+            $.fn.extend({
+                insertAtCaret: function (myValue) {
+                    var $t = $(this)[0];
+                    if (document.selection) {
+                        this.focus();
+                        sel = document.selection.createRange();
+                        sel.text = myValue;
+                        this.focus();
+                    } else
+                        if ($t.selectionStart || $t.selectionStart == '0') {
+                            var startPos = $t.selectionStart;
+                            var endPos = $t.selectionEnd;
+                            var scrollTop = $t.scrollTop;
+                            $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
+                            this.focus();
+                            $t.selectionStart = startPos + myValue.length;
+                            $t.selectionEnd = startPos + myValue.length;
+                            $t.scrollTop = scrollTop;
+                        } else {
+                            this.value += myValue;
+                            this.focus();
+                        }
+                }
+            })
+        })(jQuery);
+
+	$(".goal-card tbody tr").click(function(){
+		$(".remark").insertAtCaret($(this).attr("name-en"));
+	});
+	</script>
 </body>
 
 </html>
