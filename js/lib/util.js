@@ -155,5 +155,78 @@ window.util = {
 			params.push(id);
 			return assistantDb.query(sql, callback, params);
 		}
+	},
+	math : {
+		getAllNode : function(rootNode) {
+			var nodeList = [];
+			var fnList = [];
+			var getNodeList = function(root) {
+				if (root.content && !root.content.args && root.content.name) {
+					nodeList.push(root.content.name);
+				}
+				if (root.name && !root.args) {
+					nodeList.push(root.name);
+				}
+				if (root.fn && root.fn.name) {
+					fnList.push(root.fn.name);
+				}
+				if (root.content && root.content.fn && root.content.fn.name) {
+					fnList.push(root.content.fn.name);
+				}
+				if (root.args) {
+					root.forEach(function(node, path, parent) {
+						getNodeList(node);
+					});
+				}
+				if (root.content && root.content.args) {
+					root.content.forEach(function(node, path, parent) {
+						getNodeList(node);
+					});
+				}
+			}
+			getNodeList(rootNode);
+			return {
+				nodeList : nodeList,
+				fnList : fnList
+			};
+		},
+		checkExpression : function(expression, accessParams) {
+			var errMsg = "";
+			try {
+				var rootNode = math.parse(expression);
+				var result = util.math.getAllNode(rootNode);
+				console.log(result);
+				var accessFns = [ "abs", "add", "cbrt", "ceil", "cube",
+						"divide", "dotDivide", "dotMultiply", "dotPow", "exp",
+						"fix", "floor", "gcd", "hypot", "lcm", "log", "log10",
+						"mod", "multiply", "norm", "nthRoot", "pow", "round",
+						"sign", "sqrt", "square", "subtract", "unaryMinus",
+						"unaryPlus", "xgcd", "min", "max", "acos", "acosh",
+						"acot", "acoth", "acsc", "acsch", "asec", "asech",
+						"asin", "asinh", "atan", "atan2", "atanh", "cos",
+						"cosh", "cot", "coth", "csc", "csch", "sec", "sech",
+						"sin", "sinh", "tan", "tanh" ];
+				for ( var index in result.fnList) {
+					if (accessFns.indexOf(result.fnList[index]) == -1) {
+						errMsg = "函数[" + result.fnList[index] + "]不支持，请调整表达式。";
+						break;
+					}
+				}
+				if (errMsg) {
+					return errMsg;
+				}
+				for ( var index in result.nodeList) {
+					if (accessParams
+							&& accessParams.indexOf(result.nodeList[index]) == -1) {
+						errMsg = "要素[" + result.nodeList[index] + "]不存在，请认真核实。";
+						break;
+					}
+				}
+			} catch (e) {
+				console.log(e);
+				errMsg = "表达式不正确，请认真核实。";
+			}
+			return errMsg;
+		}
 	}
 };

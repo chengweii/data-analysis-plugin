@@ -2,46 +2,32 @@
 <html>
 
 <head>
-<title>test</title>
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="css/custom.css" type="text/css" />
-<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="js/math.min.js"></script>
-<script type="text/javascript" src="js/settings.js"></script>
-<script type="text/javascript" src="js/sqlite.js"></script>
-<script type="text/javascript" src="js/util.js"></script>
+	<title>test</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="css/custom.css" type="text/css" />
+	<script type="text/javascript" src="js/lib/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/lib/math.min.js"></script>
+	<script type="text/javascript" src="js/lib/settings.js"></script>
+	<script type="text/javascript" src="js/lib/sqlite.js"></script>
+	<script type="text/javascript" src="js/lib/util.js"></script>
 </head>
 
 <body>
 	<div class="col-lg-12 col-md-12">
 		<div class="card" id="page-edit">
-			<div class="card-header" data-background-color="orange">
-				<button type="button" rel="tooltip" title="Edit Task"
-					class="btn btn-primary btn-simple btn-xs back-btn">
-					<svg class="icon"
-						style="width: 1em; height: 1em; vertical-align: middle; fill: currentColor; overflow: hidden;"
-						viewBox="0 0 1024 1024" version="1.1"
-						xmlns="http://www.w3.org/2000/svg" p-id="2513">
-						<path
-							d="M896 544H250.4l242.4 242.4L448 832 173.6 557.6 128 512l45.6-45.6L448 192l45.6 45.6L250.4 480H896v64z"
-							p-id="2514"></path></svg>
-				</button>
-				<h1 class="title">test</h1>
-			</div>
 			<div class="col-lg-6 col-md-12">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">备注</label>
-							<textarea rows="3" cols="20"
-								class="form-control remark"></textarea>
+							<label class="control-label">test</label>
+							<textarea rows="3" cols="20" class="form-control remark"></textarea>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<button type="submit" id="save-data" class="btn btn-save pull-right">保存</button>
+						<button type="submit" id="save-data" class="btn btn-save pull-right">test</button>
 					</div>
 				</div>
 			</div>
@@ -79,36 +65,115 @@
 	</div>
 
 	<script type="text/javascript">
-	(function ($) {
-            $.fn.extend({
-                insertAtCaret: function (myValue) {
-                    var $t = $(this)[0];
-                    if (document.selection) {
-                        this.focus();
-                        sel = document.selection.createRange();
-                        sel.text = myValue;
-                        this.focus();
-                    } else
-                        if ($t.selectionStart || $t.selectionStart == '0') {
-                            var startPos = $t.selectionStart;
-                            var endPos = $t.selectionEnd;
-                            var scrollTop = $t.scrollTop;
-                            $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
-                            this.focus();
-                            $t.selectionStart = startPos + myValue.length;
-                            $t.selectionEnd = startPos + myValue.length;
-                            $t.scrollTop = scrollTop;
-                        } else {
-                            this.value += myValue;
-                            this.focus();
-                        }
-                }
-            })
-        })(jQuery);
+		(function ($) {
+			$.fn.extend({
+				insertAtCaret: function (myValue) {
+					var $t = $(this)[0];
+					if (document.selection) {
+						this.focus();
+						sel = document.selection.createRange();
+						sel.text = myValue;
+						this.focus();
+					} else
+						if ($t.selectionStart || $t.selectionStart == '0') {
+							var startPos = $t.selectionStart;
+							var endPos = $t.selectionEnd;
+							var scrollTop = $t.scrollTop;
+							$t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos, $t.value.length);
+							this.focus();
+							$t.selectionStart = startPos + myValue.length;
+							$t.selectionEnd = startPos + myValue.length;
+							$t.scrollTop = scrollTop;
+						} else {
+							this.value += myValue;
+							this.focus();
+						}
+				}
+			})
+		})(jQuery);
 
-	$(".goal-card tbody tr").click(function(){
-		$(".remark").insertAtCaret($(this).attr("name-en"));
-	});
+		$(".goal-card tbody tr").click(function () {
+			$(".remark").insertAtCaret($(this).attr("name-en"));
+		});
+
+		function getAllNode(rootNode) {
+			var nodeList = [];
+			var fnList = [];
+			var getNodeList = function (root) {
+				if (root.content && !root.content.args && root.content.name) {
+					nodeList.push(root.content.name);
+				}
+				if (root.name && !root.args) {
+					nodeList.push(root.name);
+				}
+				if (root.fn && root.fn.name) {
+					fnList.push(root.fn.name);
+				}
+				if (root.content && root.content.fn && root.content.fn.name) {
+					fnList.push(root.content.fn.name);
+				}
+				if (root.args) {
+					root.forEach(function (node, path, parent) {
+						getNodeList(node);
+					});
+				}
+				if (root.content && root.content.args) {
+					root.content.forEach(function (node, path, parent) {
+						getNodeList(node);
+					});
+				}
+			}
+			getNodeList(rootNode);
+			return { nodeList: nodeList, fnList: fnList };
+		}
+
+		function checkExpression(expression, nameList) {
+			var errMsg = "";
+			try {
+				var rootNode = math.parse(expression);
+				var result = getAllNode(rootNode);
+				console.log(result);
+				var accessFn = ["abs", "add", "cbrt", "ceil", "cube", "divide", "dotDivide", "dotMultiply", "dotPow", "exp", "fix", "floor",
+					"gcd", "hypot", "lcm", "log", "log10", "mod", "multiply", "norm", "nthRoot", "pow", "round", "sign", "sqrt", "square",
+					"subtract", "unaryMinus", "unaryPlus", "xgcd", "min", "max", "acos", "acosh", "acot", "acoth", "acsc", "acsch", "asec",
+					"asech", "asin", "asinh", "atan", "atan2", "atanh", "cos", "cosh", "cot", "coth", "csc", "csch", "sec", "sech", "sin", "sinh", "tan", "tanh"];
+				for (var index in result.fnList) {
+					if (accessFn.indexOf(result.fnList[index]) == -1) {
+						errMsg = "函数[" + result.fnList[index] + "]不支持，请调整表达式。";
+						break;
+					}
+				}
+				if (errMsg) {
+					return errMsg;
+				}
+				for (var index in result.nodeList) {
+					if (nameList && nameList.indexOf(result.nodeList[index]) == -1) {
+						errMsg = "要素[" + result.nodeList[index] + "]不存在，请认真核实。";
+						break;
+					}
+				}
+			} catch (e) {
+				console.log(e);
+				errMsg = "表达式不正确，请认真核实。";
+			}
+			return errMsg;
+		}
+
+		$("#save-data").click(function () {
+			var expression = $(".remark").val();
+			var nameList = [];
+			$(".goal-card tbody tr").each(function (index, item) {
+				nameList.push($(this).attr("name-en"));
+			});
+
+			var result = checkExpression(expression, nameList);
+			if (result) {
+				alert(result);
+				return false;
+			}
+
+			console.log(math.eval("add(5,6)"));
+		});
 	</script>
 </body>
 
