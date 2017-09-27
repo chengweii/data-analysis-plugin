@@ -66,6 +66,8 @@ function syncRelations(name_en, expression, callback) {
 						});
 					}
 					util.dao.insertBatch('analysis_relations', rows, callback);
+				}else{
+					callback();
 				}
 			});
 		}
@@ -125,8 +127,19 @@ function bindFactorList() {
 	});
 	
 	$(".expression")[0].onselect=function() {
-		var msg = $(this).val().substring(this.selectionStart,this.selectionEnd);
-		util.showToast(msg);
+		var word = $(this).val().substring(this.selectionStart,this.selectionEnd);
+		var msg = "";
+		$(".right-content-factor tbody tr").each(function(index, item) {
+			var tr = $(this);
+			var name_cn = tr.attr("name-cn");
+			var name_en = tr.attr("name-en");
+			if (name_en.indexOf(word) != -1) {
+				msg = name_cn;
+			}
+		});
+		if(msg){
+			util.showToast(msg);
+		}
 	};
 }
 bindFactorList();
