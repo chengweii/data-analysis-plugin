@@ -25,20 +25,51 @@ if (opreate == 'edit') {
 		});
 	}
 	bindData();
-	save_fn = function() {
+	save_fn = function(callback) {
 		var data = $(".form-control").serializeObject();
 		util.dao.update(table, data, id, function() {
-			location.href = "main.html?typeFrom=quota";
+			callback(data.name_en, data.expression, function() {
+				location.href = "main.html?typeFrom=quota";
+			})
 		});
 	};
 } else {
 	$("h1.title").html("添加指标");
-	save_fn = function() {
+	save_fn = function(callback) {
 		var data = $(".form-control").serializeObject();
 		util.dao.insert(table, data, function() {
-			location.href = "main.html?typeFrom=quota";
+			callback(data.name_en, data.expression, function() {
+				location.href = "main.html?typeFrom=quota";
+			})
 		});
 	};
+}
+
+function syncRelations(name_en, expression, callback) {
+	var factors = util.math.getAllNode(expression).nodeList;
+	factors = util.unique(factors);
+	
+	var query_sql = 'select * from ' + table + ' where name_en =  ?';
+	util.dao.execute(query_sql, [ name_en ], function(tx, res) {
+		if (res.rows.length) {
+			var object_id = res.rows[0]['id'];
+			
+			util.dao.execute("select id from analysis_factor where name_en in ('"+factors.join("','")+"') and id not in (select relation_object_id from analysis_relations where object_id = ? and object_type = '1' and relation_object_type = '2')", [ object_id ], function(tx, res) {
+				var rows = [];
+				if (res.rows.length) {
+					for (var index = 0; index < res.rows.length; index++) {
+						rows.push({
+							object_id : object_id,
+							object_type : '1',
+							relation_object_id : res.rows[index]["id"],
+							relation_object_type : '2',
+						});
+					}
+					util.dao.insertBatch('analysis_relations', rows, callback);
+				}
+			});
+		}
+	});
 }
 
 $("#save-data").click(function() {
@@ -52,7 +83,7 @@ $("#save-data").click(function() {
 		alert(result);
 		return false;
 	}
-	save_fn();
+	save_fn(syncRelations);
 });
 
 function bindFactorList() {

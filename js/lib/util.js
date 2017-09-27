@@ -127,6 +127,17 @@ window.util = {
 			$("#" + tipId).hide();
 		});
 	},
+	unique : function(array) {
+		var res = [];
+		var json = {};
+		for (var i = 0; i < array.length; i++) {
+			if (!json[array[i]]) {
+				res.push(array[i]);
+				json[array[i]] = 1;
+			}
+		}
+		return res;
+	},
 	dao : {
 		execute : function(sql, params, callback) {
 			return assistantDb.query(sql, callback, params);
@@ -143,6 +154,20 @@ window.util = {
 			row_data.push(row_temp);
 			return assistantDb.insert(table, row_data, callback);
 		},
+		insertBatch : function(table, rows, callback) {
+			var row_data = [];
+			var row_temp = [];
+			for ( var k in rows) {
+				for ( var p in rows[k]) {
+					row_temp.push({
+						name : p,
+						value : rows[k][p]
+					});
+				}
+			}
+			row_data.push(row_temp);
+			return assistantDb.multiInsert(table, row_data, callback);
+		},
 		update : function(table, row, id, callback) {
 			var sql = "update " + table + " set ";
 			var params = [];
@@ -157,7 +182,8 @@ window.util = {
 		}
 	},
 	math : {
-		getAllNode : function(rootNode) {
+		getAllNode : function(expression) {
+			var rootNode = math.parse(expression);
 			var nodeList = [];
 			var fnList = [];
 			var getNodeList = function(root) {
@@ -193,8 +219,7 @@ window.util = {
 		checkExpression : function(expression, accessParams) {
 			var errMsg = "";
 			try {
-				var rootNode = math.parse(expression);
-				var result = util.math.getAllNode(rootNode);
+				var result = util.math.getAllNode(expression);
 				console.log(result);
 				var accessFns = [ "abs", "add", "cbrt", "ceil", "cube",
 						"divide", "dotDivide", "dotMultiply", "dotPow", "exp",
