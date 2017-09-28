@@ -18,8 +18,6 @@ if (opreate == 'edit') {
 				$(".unit").val(res.rows[0]['unit']);
 				$(".expression").text(res.rows[0]['expression']);
 				$(".period").val(res.rows[0]['period']);
-				$(".coordinate").val(res.rows[0]['coordinate']);
-				$(".reference_value").val(res.rows[0]['reference_value']);
 				$(".remark").text(res.rows[0]['remark']);
 			}
 		});
@@ -63,6 +61,7 @@ function syncRelations(name_en, expression, callback) {
 							object_type : '1',
 							relation_object_id : res.rows[index]["id"],
 							relation_object_type : '2',
+							relation_remark : '算法直接依赖关系'
 						});
 					}
 					util.dao.insertBatch('analysis_relations', rows, callback);
@@ -75,18 +74,33 @@ function syncRelations(name_en, expression, callback) {
 }
 
 $("#save-data").click(function() {
-	var expression = $(".expression").val();
-	var accessParams = [];
-	$(".right-content-factor tbody tr").each(function(index, item) {
-		accessParams.push($(this).attr("name-en"));
-	});
-	var result = util.math.checkExpression(expression, accessParams);
-	if (result) {
-		alert(result);
+	if(checkParams()){
+		save_fn(syncRelations);
+	}
+});
+
+function checkParams(){
+	var checkInfo = util.form.requireCheck();
+	if (checkInfo.hasError) {
+		alert(checkInfo.errMsg);
 		return false;
 	}
-	save_fn(syncRelations);
-});
+	
+	var expression = $(".expression").val();
+	if(expression&&expression.trim()){
+		var accessParams = [];
+		$(".right-content-factor tbody tr").each(function(index, item) {
+			accessParams.push($(this).attr("name-en"));
+		});
+		var result = util.math.checkExpression(expression, accessParams);
+		if (result) {
+			alert(result);
+			return false;
+		}	
+	}
+	
+	return true;
+}
 
 function bindFactorList() {
 	var query_sql = 'select * from analysis_factor';

@@ -124,7 +124,7 @@ window.util = {
 			tip.show();
 		});
 		element.mouseout(function() {
-			$("#" + tipId).remove();
+			$("#" + tipId).hide();
 		});
 	},
 	showToast : function(msg) {
@@ -138,7 +138,7 @@ window.util = {
 		toast.show();
 		setTimeout(function() {
 			toast.remove();
-		},2000);
+		}, 2000);
 	},
 	unique : function(array) {
 		var res = [];
@@ -265,6 +265,127 @@ window.util = {
 				errMsg = "表达式不正确，请认真核实。";
 			}
 			return errMsg;
+		}
+	},
+	date : {
+		checkDateTime : function(time, period) {
+			if (period == 1) {
+				return util.date.checkDate(time);
+			} else if (period == 2) {
+				return util.date.checkWeek(time);
+			} else if (period == 3) {
+				return util.date.checkMonth(time);
+			} else if (period == 4) {
+				return util.date.checkQuarter(time);
+			} else if (period == 5) {
+				return util.date.checkYear(time);
+			}
+			return {
+				hasError : false,
+				errMsg : ""
+			};
+		},
+		checkYear : function(year) {
+			var info = {
+				hasError : false,
+				errMsg : ""
+			};
+			if (isNaN(parseInt(year))) {
+				info.hasError = true;
+				info.errMsg = "年份输入有误,请重新输入。";
+			} else if (parseInt(year) < 1950 || parseInt(year) > 2050) {
+				info.hasError = true;
+				info.errMsg = "年份应该在1950-2050之间。";
+			}
+			return info;
+		},
+		checkMonth : function(month) {
+			var info = {
+				hasError : false,
+				errMsg : ""
+			};
+			if (isNaN(parseInt(month, 10))) {
+				info.hasError = true;
+				info.errMsg = "月份输入有误,请重新输入。";
+			} else if (parseInt(month, 10) < 1 || parseInt(month, 10) > 12) {
+				info.hasError = true;
+				info.errMsg = "月份应该在1-12之间。";
+			}
+			return info;
+		},
+		checkQuarter : function(quarter) {
+			var info = {
+				hasError : false,
+				errMsg : ""
+			};
+			if (isNaN(parseInt(quarter, 10))) {
+				info.hasError = true;
+				info.errMsg = "季度输入有误,请重新输入。";
+			} else if (parseInt(month, 10) < 1 || parseInt(month, 10) > 4) {
+				info.hasError = true;
+				info.errMsg = "季度应该在1-4之间。";
+			}
+			return info;
+		},
+		checkWeek : function(week) {
+			var info = {
+				hasError : false,
+				errMsg : ""
+			};
+			if (isNaN(parseInt(quarter, 10))) {
+				info.hasError = true;
+				info.errMsg = "周输入有误,请重新输入。";
+			} else if (parseInt(month, 10) < 1 || parseInt(month, 10) > 4) {
+				info.hasError = true;
+				info.errMsg = "周应该在1-4之间。";
+			}
+			return info;
+		},
+		checkDate : function(dateString) {
+			var info = {
+				hasError : false,
+				errMsg : ""
+			};
+			try {
+				var datetime = new Date(Date.parse(dateString));
+				var year = datetime.getFullYear();
+				var month = datetime.getMonth() + 1;
+				var date = datetime.getDate();
+				var calDays = function(year, month) {
+					var d = new Date(year, month, 0);
+					return d.getDate();
+				}
+				var daysOfMonth = calDays(parseInt(year), parseInt(month));
+
+				if (isNaN(parseInt(date))) {
+					info.hasError = true;
+					info.errMsg = "日期输入有误,请重新输入。";
+				} else if (parseInt(date) < 1 || parseInt(date) > daysOfMonth) {
+					info.hasError = true;
+					info.errMsg = "日期应该在1-" + daysOfMonth + "之间。";
+				}
+			} catch (e) {
+				info.hasError = true;
+				info.errMsg = "日期格式必须为yyyy/MM/dd。";
+			}
+			return info;
+		},
+	},
+	form : {
+		requireCheck : function() {
+			var info = {
+				hasError : false,
+				errMsg : ""
+			};
+			$(".require").each(function(index, item) {
+				var value = $(item).val();
+				if (!value || !value.trim()) {
+					info.hasError = true;
+					info.errMsg = $(item).attr("require-msg");
+					return false;
+				}
+			});
+			return info;
 		}
 	}
 };

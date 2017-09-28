@@ -310,6 +310,9 @@ function initDb() {
 		properties : [ {
 			name : 'id',
 			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
+		},{
+			name : 'quota_id',
+			type : 'INTEGER'
 		}, {
 			name : 'coordinate',
 			type : 'char'
@@ -322,6 +325,9 @@ function initDb() {
 		properties : [ {
 			name : 'id',
 			type : 'INTEGER PRIMARY KEY AUTOINCREMENT'
+		},{
+			name : 'factor_id',
+			type : 'INTEGER'
 		}, {
 			name : 'coordinate',
 			type : 'char'
@@ -346,6 +352,9 @@ function initDb() {
 		}, {
 			name : 'relation_object_type',
 			type : 'INTEGER'
+		} , {
+			name : 'relation_remark',
+			type : 'char'
 		} ]
 	} ];
 	if (!assistantDb.check(dbTable)) {

@@ -34,64 +34,73 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">中文名称</label> <input name="name_cn" type="text"
-								class="form-control name_cn" />
+							<label class="control-label">中文名称</label> <input name="name_cn"
+								type="text" class="form-control name_cn" maxlength="20" />
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">英文名称</label> <input name="name_en" type="text"
-								class="form-control name_en" />
+							<label class="control-label">英文名称</label> <input name="name_en"
+								type="text" class="form-control name_en" maxlength="10" />
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">指标分类</label> <input name="category" type="text"
-								class="form-control category" />
+							<label class="control-label">指标分类</label> <input name="category"
+								type="text" class="form-control category" maxlength="10" />
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">单位</label> <input name="unit" type="text"
-								class="form-control unit" />
+							<label class="control-label">单位</label> <input name="unit"
+								type="text" class="form-control unit" maxlength="3" />
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">算法</label> <textarea name="expression" rows="3" cols="20"
-								class="form-control expression"></textarea>
+							<label class="control-label">算法</label>
+							<textarea name="expression" rows="3" cols="20"
+								class="form-control expression" maxlength="200"></textarea>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">时间周期</label> <input name="period" type="text"
-								class="form-control period" />
+							<label class="control-label">时间周期</label> <select name="period"
+								class="form-control period">
+								<option value="1">日</option>
+								<option value="2">周</option>
+								<option value="3">月</option>
+								<option value="4">季度</option>
+								<option value="5">年</option>
+							</select>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">时间坐标</label> <input name="coordinate" type="text"
-								class="form-control coordinate" />
+							<label class="control-label">时间坐标</label> <select
+								name="coordinate" class="form-control coordinate">
+							</select>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group label-floating">
-							<label class="control-label">参考值</label> <input name="reference_value" type="text"
-								class="form-control reference_value" />
+							<label class="control-label">参考值</label> <input
+								name="reference_value" type="text"
+								class="form-control reference_value" maxlength="10" />
 						</div>
 					</div>
 				</div>
@@ -100,13 +109,14 @@
 						<div class="form-group label-floating">
 							<label class="control-label">备注</label>
 							<textarea name="remark" rows="3" cols="20"
-								class="form-control remark"></textarea>
+								class="form-control remark" maxlength="200"></textarea>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<button type="submit" id="save-data" class="btn btn-save pull-right">保存</button>
+						<button type="submit" id="save-data"
+							class="btn btn-save pull-right">保存</button>
 					</div>
 				</div>
 			</div>

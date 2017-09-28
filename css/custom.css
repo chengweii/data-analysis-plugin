@@ -265,6 +265,7 @@ table {
 	padding-left: 5px;
     width: 70px;
     display: inline-block;
+    font-family: 微软雅黑;
 }
 
 .form-control {
@@ -286,6 +287,7 @@ table {
 	line-height: 1.42857;
 	width: 400px;
 	outline: none;
+	font-family: 微软雅黑;
 }
 
 textarea.form-control{
@@ -317,6 +319,7 @@ textarea.form-control{
 	border-top: 1px solid #ddd;
 	font-size: 9px;
 	text-align: center;
+	font-family: 微软雅黑;
 }
 
 .card .card-header {

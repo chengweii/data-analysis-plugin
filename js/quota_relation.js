@@ -8,10 +8,16 @@ var objectType = '1';
 function bindSelect() {
 	var checkbox = $(this);
 	var isChecked = checkbox.prop("checked");
+	var relationRemark = checkbox.parent().find(".relation-remark").val();
 	var relationObject = checkbox.prop("id").split("_");
 	var relationObjectType = relationObject[0];
 	var relationObjectId = relationObject[1];
 	if (isChecked) {
+		if(!relationRemark||!relationRemark.trim()){
+			checkbox.attr("checked",false);
+			alert("请输入关系说明。");
+			return false;
+		}
 		util.dao.insert('analysis_relations', {
 			object_id : id,
 			object_type : objectType,
@@ -29,7 +35,7 @@ function bindSelect() {
 }
 
 function bindAlllist() {
-	var query_sql = "SELECT a.id, a.type, a.name_cn, a.name_en, b.id AS relation_id FROM ( SELECT q.id, '1' AS type, q.name_cn, q.name_en FROM analysis_quota q where q.id not in (?) UNION ALL SELECT f.id, '2' AS type, f.name_cn, f.name_en FROM analysis_factor f ) a LEFT JOIN analysis_relations b ON b.object_id = ? AND b.object_type = ? AND b.relation_object_type = a.type AND b.relation_object_id = a.id";
+	var query_sql = "SELECT a.id, a.type, a.name_cn, a.name_en, b.id AS relation_id,b.relation_remark FROM ( SELECT q.id, '1' AS type, q.name_cn, q.name_en FROM analysis_quota q where q.id not in (?) UNION ALL SELECT f.id, '2' AS type, f.name_cn, f.name_en FROM analysis_factor f ) a LEFT JOIN analysis_relations b ON b.object_id = ? AND b.object_type = ? AND b.relation_object_type = a.type AND b.relation_object_id = a.id";
 	util.dao.execute(query_sql, [ id, id, objectType ], function(tx, res) {
 		if (res.rows.length) {
 			var template = $(".relation-list .checkbox");
@@ -45,6 +51,7 @@ function bindAlllist() {
 				$(".relation-list").append(checkbox);
 				if (res.rows[index]["relation_id"]) {
 					checkbox.find("input").attr("checked", true);
+					checkbox.parent().find(".relation-remark").val(res.rows[index]["relation_remark"]);
 				}
 				checkbox.show();
 			}
