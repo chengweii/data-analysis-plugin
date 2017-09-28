@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>数据分析助手</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="css/custom.css" type="text/css" />
+	<script type="text/javascript" src="js/lib/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/lib/insert-at-caret.js"></script>
+	<script type="text/javascript" src="js/lib/math.min.js"></script>
+	<script type="text/javascript" src="js/lib/settings.js"></script>
+	<script type="text/javascript" src="js/lib/sqlite.js"></script>
+	<script type="text/javascript" src="js/lib/util.js"></script>
+	<style>
+		.expression {
+			text-align: left;
+			padding-left: 20px;
+		}
+
+		.calculate-result {
+			text-align: left;
+			padding-left: 22px;
+		}
+
+		.form-control {
+			width: 50px;
+			padding: 0px;
+		}
+
+		.form-group {
+			text-align: left;
+			margin-left:20px;
+		}
+
+		button.btn.btn-save{
+			margin-right:10px;
+			margin-top:10px;
+		}
+
+		.factor-title{
+			width:280px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="col-lg-12 col-md-12">
+		<div class="card" id="page-edit">
+			<div class="card-header" data-background-color="orange">
+				<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs back-btn">
+					<svg class="icon"
+						style="width: 1em; height: 1em; vertical-align: middle; fill: currentColor; overflow: hidden;"
+						viewBox="0 0 1024 1024" version="1.1"
+						xmlns="http://www.w3.org/2000/svg" p-id="2513">
+						<path
+							d="M896 544H250.4l242.4 242.4L448 832 173.6 557.6 128 512l45.6-45.6L448 192l45.6 45.6L250.4 480H896v64z"
+							p-id="2514"></path></svg>
+				</button>
+				<h1 class="title">test</h1>
+			</div>
+			<div class="col-lg-6 col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+						<h1 class="expression">factor*factor-factorfactor*factor-factorfactor*factor-factor</h1>
+						<h1 class="calculate-result"><span style="font-size:15px;">运算结果：</span><span id="calculate-result">123</span></h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group label-floating">
+							<span>时间坐标</span> <input name="name_en" type="text" class="form-control coordinate" maxlength="10" placeholder=""
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group label-floating">
+							<span class="factor-title">要素要素要素要素要素要素要素要素要素要素</span>
+							<input type="text" class="form-control require" maxlength="10" placeholder="周期" />
+							<input type="text" class="form-control require" maxlength="10" placeholder="参数值" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group label-floating">
+							<span class="factor-title">要素2</span>
+							<input type="text" class="form-control require" maxlength="10" placeholder="周期" />
+							<input type="text" class="form-control require" maxlength="10" placeholder="参数值" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" style="text-align:center;">
+						<button type="button" id="calculate-btn" class="btn btn-save">计算</button>
+						<button type="button" id="save-data" class="btn btn-save">保存</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-12 right-content-default">
+				<img src="img/bg.jpg" class="bg-img" alt="">
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+</html>
