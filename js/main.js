@@ -100,7 +100,7 @@ function renderQuotaData(rows, table) {
 		$(tds[3]).find("span").html(expression).attr("title-content",
 				expression);
 		var period = rows[index]['period'];
-		$(tds[4]).html(period);
+		$(tds[4]).html($.convertor.period(period));
 		var coordinate = rows[index]['coordinate'];
 		$(tds[5]).html(coordinate);
 		var reference_value = rows[index]['reference_value'];
@@ -125,6 +125,11 @@ function renderQuotaData(rows, table) {
 	$("." + type + "-card .detail-btn").click(
 			function() {
 				location.href = type + "_detail.html?id="
+						+ $(this).parent().parent().attr(type + "-id");
+			});
+	$("." + type + "-card .calculate-btn").click(
+			function() {
+				location.href = type + "_calculate.html?id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .document-btn").click(
@@ -169,7 +174,7 @@ function renderFactorData(rows, table) {
 		$(tds[3]).find("span").html(expression).attr("title-content",
 				expression);
 		var period = rows[index]['period'];
-		$(tds[4]).html(period);
+		$(tds[4]).html($.convertor.period(period));
 		var coordinate = rows[index]['coordinate'];
 		$(tds[5]).html(coordinate);
 		var reference_value = rows[index]['reference_value'];

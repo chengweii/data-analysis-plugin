@@ -18,6 +18,7 @@ if (opreate == 'edit') {
 				$(".unit").val(res.rows[0]['unit']);
 				$(".expression").text(res.rows[0]['expression']);
 				$(".period").val(res.rows[0]['period']);
+				$(".period").attr("disabled","disabled");
 				$(".remark").text(res.rows[0]['remark']);
 			}
 		});
@@ -25,6 +26,7 @@ if (opreate == 'edit') {
 	bindData();
 	save_fn = function(callback) {
 		var data = $(".form-control").serializeObject();
+		delete data.period;
 		util.dao.update(table, data, id, function() {
 			callback(data.name_en, data.expression, function() {
 				location.href = "main.html?typeFrom=quota";
