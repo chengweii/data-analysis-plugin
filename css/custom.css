@@ -454,3 +454,8 @@ button.btn.btn-save{
 	color: #333333;
 	transition: opacity, transform .2s ease;
 }
+
+
+button.btn.disabled-status{
+	background-color: grey;
+}

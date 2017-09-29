@@ -1,25 +1,32 @@
 var id = util.getQueryString("id");
 
-$("#page-detail .back-btn").click(function () {
+$("#page-detail .back-btn").click(function() {
 	location.href = "main.html?typeFrom=quota";
 });
 
 var query_sql = 'select * from analysis_quota where id =  ?';
 util.dao.execute(query_sql, [ id ], function(tx, res) {
 	if (res.rows.length) {
-		$(".name_cn").attr("title-content",res.rows[0]['name_cn']).html(res.rows[0]['name_cn']);
-		$(".name_en").attr("title-content",res.rows[0]['name_en']).html(res.rows[0]['name_en']);
+		$(".name_cn").attr("title-content", res.rows[0]['name_cn']).html(
+				res.rows[0]['name_cn']);
+		$(".name_en").attr("title-content", res.rows[0]['name_en']).html(
+				res.rows[0]['name_en']);
 		$(".category").html(res.rows[0]['category']);
 		$(".unit").html(res.rows[0]['unit']);
-		$(".expression").attr("title-content",res.rows[0]['expression']).html(res.rows[0]['expression']);
-		$(".period").html(res.rows[0]['period']);
+		$(".expression").attr("title-content", res.rows[0]['expression']).html(
+				res.rows[0]['expression']);
+		$(".period").html($.convertor.period(res.rows[0]['period']));
 		$(".coordinate").html(res.rows[0]['coordinate']);
 		$(".reference_value").html(res.rows[0]['reference_value']);
-		$(".remark").attr("title-content",res.rows[0]['remark']).html(res.rows[0]['remark']);
+		$(".remark").attr("title-content", res.rows[0]['remark']).html(
+				res.rows[0]['remark']);
+
+		renderHistoryChart(res.rows[0]);
 	}
 });
 
-var chrodChart = echarts.init(document.getElementById('chrod-chart'),e_macarons);
+var chrodChart = echarts.init(document.getElementById('chrod-chart'),
+		e_macarons);
 
 var chrodOption = {
 	title : {
@@ -180,59 +187,28 @@ var chrodOption = {
 
 chrodChart.setOption(chrodOption);
 
-var lineChart = echarts.init(document.getElementById('line-chart'),e_macarons);
+function renderHistoryChart(quota) {
+	var query_sql = 'select * from analysis_quota_history where quota_id = ? order by coordinate asc';
+	util.dao.execute(query_sql, [ id ], function(tx, res) {
+		if (res.rows.length) {
+			var data = {
+				chartId : "line-chart",
+				legend : quota.name_cn,
+				title : quota.name_cn + "历史",
+				x_data : [],
+				y_data : []
+			};
+			if(quota.unit){
+				data.unit = quota.unit;
+			}
+			for (var index = 0; index < res.rows.length; index++) {
+				var value = res.rows[index]['value'];
+				var coordinate = res.rows[index]['coordinate'];
+				data.x_data.push(coordinate);
+				data.y_data.push(value);
+			}
 
-var lineOption = {
-	    title : {
-	        text: '未来一周气温变化',
-	        subtext: '纯属虚构'
-	    },
-	    tooltip : {
-	        trigger: 'axis'
-	    },
-	    legend: {
-	        data:['最高气温']
-	    },
-	    toolbox: {
-	        show : true,
-	        feature : {
-	            mark : {show: true},
-	            magicType : {show: true, type: ['line', 'bar']}
-	        }
-	    },
-	    calculable : true,
-	    xAxis : [
-	        {
-	            type : 'category',
-	            boundaryGap : false,
-	            data : ['周一','周二','周三','周四','周五','周六','周日']
-	        }
-	    ],
-	    yAxis : [
-	        {
-	            type : 'value',
-	            axisLabel : {
-	                formatter: '{value} °C'
-	            }
-	        }
-	    ],
-	    series : [
-	        {
-	            name:'最高气温',
-	            type:'line',
-	            data:[11, 11, 15, 13, 12, 13, 10],
-	            markPoint : {
-	                data : [
-	                    {type : 'max', name: '最大值'},
-	                    {type : 'min', name: '最小值'}
-	                ]
-	            },
-	            markLine : {
-	                data : [
-	                    {type : 'average', name: '平均值'}
-	                ]
-	            }
-	        }
-	    ]
-	};
-lineChart.setOption(lineOption);
+			util.chart.renderLineChart(data);
+		}
+	});
+}

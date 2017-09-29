@@ -433,5 +433,68 @@ window.util = {
 			});
 			return info;
 		}
+	},
+	chart : {
+		renderLineChart : function(config) {
+			var lineChart = echarts.init(document
+					.getElementById(config.chartId), e_macarons);
+			var lineOption = {
+				title : {
+					text : config.title
+				},
+				tooltip : {
+					trigger : 'axis'
+				},
+				legend : {
+					data : [ config.legend ]
+				},
+				toolbox : {
+					show : true,
+					feature : {
+						mark : {
+							show : true
+						},
+						magicType : {
+							show : true,
+							type : [ 'line', 'bar' ]
+						}
+					}
+				},
+				calculable : true,
+				xAxis : [ {
+					type : 'category',
+					boundaryGap : false,
+					data : config.x_data
+				} ],
+				yAxis : [ {
+					type : 'value',
+					axisLabel : {
+						formatter : '{value} '
+								+ (config.unit ? config.unit : "")
+					}
+				} ],
+				series : [ {
+					name : config.legend,
+					type : 'line',
+					data : config.y_data,
+					markPoint : {
+						data : [ {
+							type : 'max',
+							name : '最大值'
+						}, {
+							type : 'min',
+							name : '最小值'
+						} ]
+					},
+					markLine : {
+						data : [ {
+							type : 'average',
+							name : '平均值'
+						} ]
+					}
+				} ]
+			};
+			lineChart.setOption(lineOption);
+		}
 	}
 };

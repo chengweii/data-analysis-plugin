@@ -77,22 +77,29 @@ $("#calculate-btn").click(function() {
 $("#save-data").click(function() {
 	if (checkParams()&&checkCoordinate()) {
 		var reference_value = $("#calculate-result").html();
+		$("#calculate-result").html("");
 		if(reference_value){
+			$("#save-data").addClass("disabled-status").attr("disabled", true);
 			var data = {reference_value:reference_value,coordinate:$(".coordinate").val()};
 			util.dao.update('analysis_quota', data, id, function() {
-				syncQuotaHistory();
+				syncQuotaHistory(reference_value);
 				syncFactorHistory();
+				setTimeout(function(){
+					alert("保存成功。");
+					$("#save-data").removeClass("disabled-status").removeAttr("disabled");
+				},2000);
 			});
+		}else{
+			alert("请计算完成后再保存。");
 		}
 	}
 });
 
-function syncQuotaHistory(){
+function syncQuotaHistory(calculateValue){
 	var coordinate = $(".coordinate").val();
-	var value = $("#calculate-result").html();
 	var query_sql = 'select * from analysis_quota_history where quota_id =  ? and coordinate = ?';
 	util.dao.execute(query_sql, [ id,coordinate ], function(tx, res) {
-		var data = {quota_id:id,coordinate:coordinate,value:value};
+		var data = {quota_id:id,coordinate:coordinate,value:calculateValue};
 		if (res.rows.length) {
 			util.dao.update('analysis_quota_history', data, res.rows[0]['id'], function() {});
 		}else{
