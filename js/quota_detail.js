@@ -22,6 +22,8 @@ util.dao.execute(query_sql, [ id ], function(tx, res) {
 				res.rows[0]['remark']);
 
 		renderHistoryChart(res.rows[0]);
+		
+		renderRelationChart();
 	}
 });
 
@@ -187,6 +189,65 @@ var chrodOption = {
 
 chrodChart.setOption(chrodOption);
 
+function queryQuotaRelations(object_id, callback) {
+	var query_relations_sql = "select * from analysis_relations where ";
+	var quotaRelationsList = [];
+	var level = 0;
+	var levelMax = 3;
+	var queryrelations = function(relationList, callback) {
+		var condition = "";
+		for (var index = 0; index < relationList.length; index++) {
+			quotaRelationsList.push(relationList[index]);
+			var relation_object_type = relationList[index]["relation_object_type"];
+			var relation_object_id = relationList[index]["relation_object_id"];
+			condition = condition + "(object_type = '" + relation_object_type
+					+ "' and object_id = '" + relation_object_id + "')";
+			if (index < relationList.length - 1) {
+				condition = condition + " or";
+			}
+		}
+		if (level == levelMax||!condition) {
+			callback(quotaRelationsList);
+			return false;
+		}
+		if (condition) {
+			level++;
+			var query_sql = query_relations_sql + condition;
+			util.dao.execute(query_sql, null, function(tx, res) {
+				if (res.rows.length) {
+					queryrelations(res.rows, callback);
+				}else{
+					callback(quotaRelationsList);
+				}
+			});
+		}
+	}
+
+	util.dao.execute(query_relations_sql + " object_id = ?", [ object_id ],
+			function(tx, res) {
+				if (res.rows.length) {
+					queryrelations(res.rows, callback);
+				}
+			});
+}
+
+function renderRelationChart(quota) {
+	queryQuotaRelations(id, function(quotaRelationsList) {
+		console.log(quotaRelationsList);
+		var data = {
+				chartId : "chrod-chart",
+				title : quota.name_cn + "关联情况",
+				legend : [quota.name_cn],
+				nodes : [],
+				links : []
+			};
+		for(var index in quotaRelationsList){
+			data.nodes.push({name:quotaRelationsList[index]});
+		}
+		data.nodes.push({name:quota.name_cn});
+	})
+}
+
 function renderHistoryChart(quota) {
 	var query_sql = 'select * from analysis_quota_history where quota_id = ? order by coordinate asc';
 	util.dao.execute(query_sql, [ id ], function(tx, res) {
@@ -198,7 +259,7 @@ function renderHistoryChart(quota) {
 				x_data : [],
 				y_data : []
 			};
-			if(quota.unit){
+			if (quota.unit) {
 				data.unit = quota.unit;
 			}
 			for (var index = 0; index < res.rows.length; index++) {
