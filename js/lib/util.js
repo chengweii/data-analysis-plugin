@@ -176,16 +176,16 @@ window.util = {
 		},
 		insertBatch : function(table, rows, callback) {
 			var row_data = [];
-			var row_temp = [];
 			for ( var k in rows) {
+				var row_temp = [];
 				for ( var p in rows[k]) {
 					row_temp.push({
 						name : p,
 						value : rows[k][p]
 					});
 				}
+				row_data.push(row_temp);
 			}
-			row_data.push(row_temp);
 			return assistantDb.multiInsert(table, row_data, callback);
 		},
 		update : function(table, row, id, callback) {

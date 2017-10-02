@@ -29,7 +29,7 @@ if (opreate == 'edit') {
 		delete data.period;
 		util.dao.update(table, data, id, function() {
 			callback(data.name_en, data.expression, function() {
-				alert("保存成功");
+				location.href = "main.html?typeFrom=quota";
 			})
 		});
 	};
@@ -39,7 +39,7 @@ if (opreate == 'edit') {
 		var data = $(".form-control").serializeObject();
 		util.dao.insert(table, data, function() {
 			callback(data.name_en, data.expression, function() {
-				alert("保存成功");
+				location.href = "main.html?typeFrom=quota";
 			})
 		});
 	};

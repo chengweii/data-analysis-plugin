@@ -75,6 +75,23 @@ function cDB(confs) {
 				tx.executeSql(sql, (params ? params : []), callback, _er);
 			}, _er);
 		},
+		queryBatch : function(sqls, callback, paramss, er) {
+			if (!this._db)
+				return false;
+			var self = this;
+			this._db.transaction(function(tx) {
+				for (var i = 0; i < sqls.length; i++) {
+					tx.executeSql(sqls[i], (paramss ? paramss[i] : []), function() {
+						return false;
+					}, (er ? er : self.callback_error));
+				}
+			}, self.callback_error, function() {
+				if (callback)
+					callback();
+				return true;
+			});
+			return true;
+		},
 		update : function(tbl, sets, clauses, callback) {
 			var __sql = 'UPDATE ' + tbl, _field = null, __set = '', __clause = '', __values = [];
 

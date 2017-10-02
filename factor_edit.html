@@ -35,7 +35,7 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">中文名称</label> <input name="name_cn"
-								type="text" class="form-control name_cn" maxlength="20" />
+								type="text" class="form-control require name_cn" maxlength="20"  require-msg="中文名称不能为空"/>
 						</div>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">英文名称</label> <input name="name_en"
-								type="text" class="form-control name_en" maxlength="10" />
+								type="text" class="form-control require name_en" maxlength="10"  require-msg="英文名称不能为空"/>
 						</div>
 					</div>
 				</div>
@@ -51,7 +51,7 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">指标分类</label> <input name="category"
-								type="text" class="form-control category" maxlength="10" />
+								type="text" class="form-control require category" maxlength="10"  require-msg="指标分类不能为空"/>
 						</div>
 					</div>
 				</div>
@@ -76,31 +76,13 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">时间周期</label> <select name="period"
-								class="form-control period">
+								class="form-control require period" require-msg="时间周期不能为空">
 								<option value="1">日</option>
 								<option value="2">周</option>
 								<option value="3">月</option>
 								<option value="4">季度</option>
 								<option value="5">年</option>
 							</select>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">时间坐标</label> <select
-								name="coordinate" class="form-control coordinate">
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group label-floating">
-							<label class="control-label">参考值</label> <input
-								name="reference_value" type="text"
-								class="form-control reference_value" maxlength="10" />
 						</div>
 					</div>
 				</div>
@@ -120,8 +102,44 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6 col-md-12">
+			<div class="col-lg-6 col-md-12 right-content-default">
 				<img src="img/bg.jpg" class="bg-img" alt="">
+			</div>
+			<div class="col-lg-6 col-md-12 right-content-factor"
+				style="display: none;">
+				<div class="row col-lg-12">
+					<div class="col-md-12">
+						<div class="form-group label-floating pull-right">
+							<input type="text" class="form-control search-input" />
+						</div>
+						<button type="button" rel="tooltip" title="搜索要素"
+							class="btn btn-primary btn-simple btn-xs pull-right search-btn">
+							<svg class="icon"
+								style="width: 1em; height: 1em; vertical-align: middle; fill: currentColor; overflow: hidden;"
+								viewBox="0 0 1024 1024" version="1.1"
+								xmlns="http://www.w3.org/2000/svg" p-id="1333">
+								<path
+									d="M384 128c140.8 0 256 115.2 256 256S524.8 640 384 640 128 524.8 128 384s115.2-256 256-256m0-64C207.2 64 64 207.2 64 384s143.2 320 320 320 320-143.2 320-320S560.8 64 384 64z m294.4 569.6l-45.6 45.6 272 272 45.6-45.6-272-272z"
+									p-id="1334"></path></svg>
+						</button>
+					</div>
+				</div>
+				<div class="card-content factor-card table-responsive col-lg-12">
+					<table class="table table-hover">
+						<thead class="text-primary">
+							<tr>
+								<th>中文名称</th>
+								<th>英文名称</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr name-cn="" name-en="">
+								<td class="name-cn"></td>
+								<td class="name-en"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 
