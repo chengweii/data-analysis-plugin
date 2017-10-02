@@ -23,7 +23,7 @@ util.dao.execute(query_sql, [id], function (tx, res) {
  
         renderHistoryChart(res.rows[0]);
  
-        renderRelationChart();
+        renderRelationChart(res.rows[0]);
     }
 });
  
@@ -106,20 +106,20 @@ function renderRelationChart(quota) {
             };
             for (var index in quotaRelationsList) {
                 data.nodes.push({
-                    name: quotaRelationsList[index].["relation_object_name"]
+                    name: quotaRelationsList[index]["relation_object_name"]
                 });
                 data.links.push({
-                    source: quotaRelationsList[index].["object_name"],
-                    target: quotaRelationsList[index].["relation_object_name"],
+                    source: quotaRelationsList[index]["object_name"],
+                    target: quotaRelationsList[index]["relation_object_name"],
                     weight: 1,
-                    name: quotaRelationsList[index].["relation_remark"]
+                    name: quotaRelationsList[index]["relation_remark"]
                 });
             }
             data.nodes.push({
                 name: quota.name_cn
             });
+            util.chart.renderChrodChart(data);
         });
-        util.renderChrodChart(data);
     })
 }
  
