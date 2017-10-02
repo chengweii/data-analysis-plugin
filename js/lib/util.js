@@ -495,6 +495,61 @@ window.util = {
 				} ]
 			};
 			lineChart.setOption(lineOption);
+		},
+		renderChrodChart : function(config) {
+			var chrodChart = echarts.init(document.getElementById(config.chartId),e_macarons);
+			var chrodOption = {
+				title : {
+					text : config.title,
+					x : 'right',
+					y : 'bottom'
+				},
+				tooltip : {
+					trigger : 'item',
+					formatter : function(params) {
+						if (params.indicator2) {
+							return params.indicator2 + ' ' + params.name + ' '
+									+ params.indicator;
+						} else {
+							return params.name
+						}
+					}
+				},
+				toolbox : {
+					show : true,
+					feature : {
+						magicType : {
+							show : true,
+							type : [ 'force', 'chord' ]
+						}
+					}
+				},
+				legend : {
+					x : 'left',
+					data : config.legend
+				},
+				series : [ {
+					name : config.title,
+					type : 'chord',
+					sort : 'ascending',
+					sortSub : 'descending',
+					ribbonType : false,
+					radius : '60%',
+					itemStyle : {
+						normal : {
+							label : {
+								rotate : true
+							}
+						}
+					},
+					minRadius : 7,
+					maxRadius : 20,
+					nodes : config.nodes,
+					links : config.links
+				} ]
+			};
+
+			chrodChart.setOption(chrodOption);
 		}
 	}
 };
