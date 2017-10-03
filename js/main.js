@@ -38,12 +38,14 @@ function renderGoalData(rows, table) {
 			});
 	$("." + type + "-card .remove-btn").click(
 			function() {
-				var tr = $(this).parent().parent();
-				var id = tr.attr(type + "-id");
-				util.dao.execute("delete from " + table + " where id = ?",
-						[ id ], function(tx, res) {
-							tr.remove();
-						});
+				if(confirm("是否要删除?")){
+					var tr = $(this).parent().parent();
+					var id = tr.attr(type + "-id");
+					util.dao.execute("delete from " + table + " where id = ?",
+							[ id ], function(tx, res) {
+								tr.remove();
+							});
+				}
 			});
 
 	util.bindTitleTip(type + '-card .title-tip');
@@ -112,12 +114,14 @@ function renderQuotaData(rows, table) {
 			});
 	$("." + type + "-card .remove-btn").click(
 			function() {
-				var tr = $(this).parent().parent();
-				var id = tr.attr(type + "-id");
-				util.dao.execute("delete from " + table + " where id = ?",
-						[ id ], function(tx, res) {
-							tr.remove();
-						});
+				if(confirm("是否要删除?")){
+					var tr = $(this).parent().parent();
+					var id = tr.attr(type + "-id");
+					util.dao.execute("delete from " + table + " where id = ?",
+							[ id ], function(tx, res) {
+								tr.remove();
+							});
+				}
 			});
 
 	util.bindTitleTip(type + '-card .title-tip');
@@ -186,12 +190,14 @@ function renderFactorData(rows, table) {
 			});
 	$("." + type + "-card .remove-btn").click(
 			function() {
-				var tr = $(this).parent().parent();
-				var id = tr.attr(type + "-id");
-				util.dao.execute("delete from " + table + " where id = ?",
-						[ id ], function(tx, res) {
-							tr.remove();
-						});
+				if(confirm("是否要删除?")){
+					var tr = $(this).parent().parent();
+					var id = tr.attr(type + "-id");
+					util.dao.execute("delete from " + table + " where id = ?",
+							[ id ], function(tx, res) {
+								tr.remove();
+							});
+				}
 			});
 
 	util.bindTitleTip(type + '-card .title-tip');
@@ -227,12 +233,14 @@ function renderStepData(rows, table) {
 			});
 	$("." + type + "-card .remove-btn").click(
 			function() {
-				var tr = $(this).parent().parent();
-				var id = tr.attr(type + "-id");
-				util.dao.execute("delete from " + table + " where id = ?",
-						[ id ], function(tx, res) {
-							tr.remove();
-						});
+				if(confirm("是否要删除?")){
+					var tr = $(this).parent().parent();
+					var id = tr.attr(type + "-id");
+					util.dao.execute("delete from " + table + " where id = ?",
+							[ id ], function(tx, res) {
+								tr.remove();
+							});
+				}
 			});
 
 	util.bindTitleTip(type + '-card .title-tip');
