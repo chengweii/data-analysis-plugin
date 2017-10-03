@@ -58,7 +58,7 @@ function syncRelations(name_en, expression, callback) {
 					for (var index = 0; index < res.rows.length; index++) {
 						rows.push({
 							object_id : object_id,
-							object_type : '1',
+							object_type : '2',
 							relation_object_id : res.rows[index]["id"],
 							relation_object_type : '2',
 							relation_remark : '算法直接依赖关系'

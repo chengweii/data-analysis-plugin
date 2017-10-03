@@ -97,7 +97,7 @@ function queryQuotaRelations(object_id, callback) {
         }
     }
  
-    util.dao.execute(query_relations_sql + " object_id = ?", [object_id], function (tx, res) {
+    util.dao.execute(query_relations_sql + " object_id = ? and object_type = '1'", [object_id], function (tx, res) {
         if (res.rows.length) {
             queryrelations(res.rows, callback);
         }

@@ -36,7 +36,7 @@ function bindSelect() {
 }
 
 function bindAlllist() {
-	var query_sql = "SELECT a.id, a.type, a.name_cn, a.name_en, b.id AS relation_id FROM ( SELECT q.id, '1' AS type, q.name_cn, q.name_en FROM analysis_quota q UNION ALL SELECT f.id, '2' AS type, f.name_cn, f.name_en FROM analysis_factor f where f.id not in (?)) a LEFT JOIN analysis_relations b ON b.object_id = ? AND b.object_type = ? AND b.relation_object_type = a.type AND b.relation_object_id = a.id";
+	var query_sql = "SELECT a.id, a.type, a.name_cn, a.name_en, b.id AS relation_id,b.relation_remark FROM ( SELECT q.id, '1' AS type, q.name_cn, q.name_en FROM analysis_quota q UNION ALL SELECT f.id, '2' AS type, f.name_cn, f.name_en FROM analysis_factor f  where f.id not in (?)) a LEFT JOIN analysis_relations b ON b.object_id = ? AND b.object_type = ? AND b.relation_object_type = a.type AND b.relation_object_id = a.id";
 	util.dao.execute(query_sql, [ id, id, objectType ], function(tx, res) {
 		if (res.rows.length) {
 			var template = $(".relation-list .checkbox");
@@ -96,7 +96,7 @@ function queryFactorRelations(object_id, callback) {
         }
     }
  
-    util.dao.execute(query_relations_sql + " object_id = ?", [object_id], function (tx, res) {
+    util.dao.execute(query_relations_sql + " object_id = ? and object_type = '2'", [object_id], function (tx, res) {
         if (res.rows.length) {
             queryrelations(res.rows, callback);
         }

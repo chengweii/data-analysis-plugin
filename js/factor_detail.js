@@ -1,238 +1,150 @@
 var id = util.getQueryString("id");
-
+ 
 $("#page-detail .back-btn").click(function () {
-	location.href = "main.html?typeFrom=factor";
+    location.href = "main.html?typeFrom=factor";
 });
-
-var query_sql = 'select * from analysis_quota where id =  ?';
-util.dao.execute(query_sql, [ id ], function(tx, res) {
-	if (res.rows.length) {
-		$(".name_cn").attr("title-content",res.rows[0]['name_cn']).html(res.rows[0]['name_cn']);
-		$(".name_en").attr("title-content",res.rows[0]['name_en']).html(res.rows[0]['name_en']);
-		$(".category").html(res.rows[0]['category']);
-		$(".unit").html(res.rows[0]['unit']);
-		$(".expression").attr("title-content",res.rows[0]['expression']).html(res.rows[0]['expression']);
-		$(".period").html(res.rows[0]['period']);
-		$(".coordinate").html(res.rows[0]['coordinate']);
-		$(".reference_value").html(res.rows[0]['reference_value']);
-		$(".remark").attr("title-content",res.rows[0]['remark']).html(res.rows[0]['remark']);
-	}
+ 
+var query_sql = 'select * from analysis_factor where id =  ?';
+util.dao.execute(query_sql, [id], function (tx, res) {
+    if (res.rows.length) {
+        $(".name_cn").attr("title-content", res.rows[0]['name_cn']).html(
+            res.rows[0]['name_cn']);
+        $(".name_en").attr("title-content", res.rows[0]['name_en']).html(
+            res.rows[0]['name_en']);
+        $(".category").html(res.rows[0]['category']);
+        $(".unit").html(res.rows[0]['unit']);
+        $(".expression").attr("title-content", res.rows[0]['expression']).html(
+            res.rows[0]['expression']);
+        $(".period").html($.convertor.period(res.rows[0]['period']));
+        $(".coordinate").html(res.rows[0]['coordinate']);
+        $(".reference_value").html(res.rows[0]['reference_value']);
+        $(".remark").attr("title-content", res.rows[0]['remark']).html(
+            res.rows[0]['remark']);
+ 
+        renderHistoryChart(res.rows[0]);
+ 
+        renderRelationChart(res.rows[0]);
+    }
 });
+ 
+function queryFactorRelations(object_id, callback) {
+    var query_relations_sql = "select * from analysis_relations where ";
+    var factorRelationsList = [];
+    var level = 0;
+    var levelMax = 3;
+    var queryrelations = function (relationList, callback) {
+        var condition = "";
+        for (var index = 0; index < relationList.length; index++) {
+            factorRelationsList.push(relationList[index]);
+            var relation_object_type = relationList[index]["relation_object_type"];
+            var relation_object_id = relationList[index]["relation_object_id"];
+            condition = condition + "(object_type = '" + relation_object_type + "' and object_id = '" +
+                relation_object_id + "')";
+            if (index < relationList.length - 1) {
+                condition = condition + " or";
+            }
+        }
+        if (level == levelMax || !condition) {
+            callback(factorRelationsList);
+            return false;
+        }
+        if (condition) {
+            level++;
+            var query_sql = query_relations_sql + condition;
+            util.dao.execute(query_sql, null, function (tx, res) {
+                if (res.rows.length) {
+                    queryrelations(res.rows, callback);
+                } else {
+                    callback(factorRelationsList);
+                }
+            });
+        }
+    }
+ 
+    util.dao.execute(query_relations_sql + " object_id = ? and object_type = '2'", [object_id], function (tx, res) {
+        if (res.rows.length) {
+            queryrelations(res.rows, callback);
+        }
+    });
+}
 
-var chrodChart = echarts.init(document.getElementById('chrod-chart'),e_macarons);
-
-var chrodOption = {
-	title : {
-		text : '德国队效力联盟',
-		x : 'right',
-		y : 'bottom'
-	},
-	tooltip : {
-		trigger : 'item',
-		formatter : function(params) {
-			if (params.indicator2) { // is edge
-				return params.indicator2 + ' ' + params.name + ' '
-						+ params.indicator;
-			} else { // is node
-				return params.name
-			}
-		}
-	},
-	toolbox : {
-		show : true,
-		feature : {
-			magicType : {
-				show : true,
-				type : [ 'force', 'chord' ]
-			}
-		}
-	},
-	legend : {
-		x : 'left',
-		data : [ '阿森纳', '拜仁慕尼黑', '多特蒙德' ]
-	},
-	series : [ {
-		name : '德国队效力联盟',
-		type : 'chord',
-		sort : 'ascending',
-		sortSub : 'descending',
-		ribbonType : false,
-		radius : '60%',
-		itemStyle : {
-			normal : {
-				label : {
-					rotate : true
-				}
-			}
-		},
-		minRadius : 7,
-		maxRadius : 20,
-		// 使用 nodes links 表达和弦图
-		nodes : [ {
-			name : '默特萨克'
-		}, {
-			name : '厄齐尔'
-		}, {
-			name : '波多尔斯基'
-		}, {
-			name : '诺伊尔'
-		}, {
-			name : '博阿滕'
-		}, {
-			name : '施魏因施泰格'
-		}, {
-			name : '拉姆'
-		}, {
-			name : '克罗斯'
-		}, {
-			name : '穆勒',
-			symbol : 'star'
-		}, {
-			name : '格策'
-		}, {
-			name : '胡梅尔斯'
-		}, {
-			name : '魏登费勒'
-		}, {
-			name : '杜尔姆'
-		}, {
-			name : '格罗斯克罗伊茨'
-		}, {
-			name : '阿森纳'
-		}, {
-			name : '拜仁慕尼黑'
-		}, {
-			name : '多特蒙德'
-		} ],
-		links : [ {
-			source : '阿森纳',
-			target : '默特萨克',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '阿森纳',
-			target : '厄齐尔',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '阿森纳',
-			target : '波多尔斯基',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '拜仁慕尼黑',
-			target : '诺伊尔',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '拜仁慕尼黑',
-			target : '博阿滕',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '拜仁慕尼黑',
-			target : '施魏因施泰格',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '拜仁慕尼黑',
-			target : '拉姆',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '拜仁慕尼黑',
-			target : '克罗斯',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '拜仁慕尼黑',
-			target : '穆勒',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '拜仁慕尼黑',
-			target : '格策',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '多特蒙德',
-			target : '胡梅尔斯',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '多特蒙德',
-			target : '魏登费勒',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '多特蒙德',
-			target : '杜尔姆',
-			weight : 1,
-			name : '效力'
-		}, {
-			source : '多特蒙德',
-			target : '格罗斯克罗伊茨',
-			weight : 1,
-			name : '效力'
-		} ]
-	} ]
-};
-
-chrodChart.setOption(chrodOption);
-
-var lineChart = echarts.init(document.getElementById('line-chart'),e_macarons);
-
-var lineOption = {
-	    title : {
-	        text: '未来一周气温变化',
-	        subtext: '纯属虚构'
-	    },
-	    tooltip : {
-	        trigger: 'axis'
-	    },
-	    legend: {
-	        data:['最高气温']
-	    },
-	    toolbox: {
-	        show : true,
-	        feature : {
-	            mark : {show: true},
-	            magicType : {show: true, type: ['line', 'bar']}
-	        }
-	    },
-	    calculable : true,
-	    xAxis : [
-	        {
-	            type : 'category',
-	            boundaryGap : false,
-	            data : ['周一','周二','周三','周四','周五','周六','周日']
-	        }
-	    ],
-	    yAxis : [
-	        {
-	            type : 'value',
-	            axisLabel : {
-	                formatter: '{value} °C'
-	            }
-	        }
-	    ],
-	    series : [
-	        {
-	            name:'最高气温',
-	            type:'line',
-	            data:[11, 11, 15, 13, 12, 13, 10],
-	            markPoint : {
-	                data : [
-	                    {type : 'max', name: '最大值'},
-	                    {type : 'min', name: '最小值'}
-	                ]
-	            },
-	            markLine : {
-	                data : [
-	                    {type : 'average', name: '平均值'}
-	                ]
-	            }
-	        }
-	    ]
-	};
-lineChart.setOption(lineOption);
+function getAllFactorAndQuota(callback) {
+    var query_sql = "select f.id,2 as type,f.name_cn from analysis_factor f union all select q.id,1 as type,q.name_cn from analysis_quota q";
+    util.dao.execute(query_sql, null, function (tx, res) {
+        if (res.rows.length) {
+            var fq_Map = {};
+            for (var index = 0; index < res.rows.length; index++) {
+                var id = res.rows[index]['id'];
+                var type = res.rows[index]['type'];
+                var name_cn = res.rows[index]['name_cn'];
+                fq_Map[type + "_" + id] = name_cn;
+            }
+            callback(fq_Map);
+        }
+    });
+}
+ 
+function renderRelationChart(factor) {
+	queryFactorRelations(id, function (factorRelationsList) {
+        console.log(factorRelationsList);
+        getAllFactorAndQuota(function (fq_Map) {
+            for (var index in factorRelationsList) {
+                var object_id = factorRelationsList[index]["object_id"];
+                var object_type = factorRelationsList[index]["object_type"];
+                factorRelationsList[index]["object_name"] = fq_Map[object_type + "_" + object_id];
+                var relation_object_id = factorRelationsList[index]["relation_object_id"];
+                var relation_object_type = factorRelationsList[index]["relation_object_type"];
+                factorRelationsList[index]["relation_object_name"] = fq_Map[relation_object_type + "_" +
+                    relation_object_id];
+            }
+            var data = {
+                chartId: "chrod-chart",
+                title: factor.name_cn + "关联情况",
+                legend: [factor.name_cn],
+                nodes: [],
+                links: []
+            };
+            for (var index in factorRelationsList) {
+                data.nodes.push({
+                    name: factorRelationsList[index]["relation_object_name"]
+                });
+                data.links.push({
+                    source: factorRelationsList[index]["object_name"],
+                    target: factorRelationsList[index]["relation_object_name"],
+                    weight: 1,
+                    name: factorRelationsList[index]["relation_remark"]
+                });
+            }
+            data.nodes.push({
+                name: factor.name_cn
+            });
+            util.chart.renderChrodChart(data);
+        });
+    })
+}
+ 
+function renderHistoryChart(factor) {
+    var query_sql = 'select * from analysis_factor_history where factor_id = ? order by coordinate asc';
+    util.dao.execute(query_sql, [id], function (tx, res) {
+        if (res.rows.length) {
+            var data = {
+                chartId: "line-chart",
+                legend: factor.name_cn,
+                title: factor.name_cn + "历史",
+                x_data: [],
+                y_data: []
+            };
+            if (factor.unit) {
+                data.unit = factor.unit;
+            }
+            for (var index = 0; index < res.rows.length; index++) {
+                var value = res.rows[index]['value'];
+                var coordinate = res.rows[index]['coordinate'];
+                data.x_data.push(coordinate);
+                data.y_data.push(value);
+            }
+ 
+            util.chart.renderLineChart(data);
+        }
+    });
+}

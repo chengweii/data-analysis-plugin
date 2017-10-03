@@ -1,31 +1,3 @@
-/*var result = math.eval("(5+3)*2.5/3");
-function showNode(node) {
-	node.forEach(function(node, path, parent) {
-		if (node.args) {
-			showNode(node);
-		} else {
-			console.log(node.name);
-		}
-	});
-}
-function transform(node) {
-	var transformed = node.transform(function(node, path, parent) {
-		if (node.isSymbolNode && node.name === 'roi_month') {
-			return new math.expression.node.ConstantNode(3);
-		} else if (node.isSymbolNode && node.name === 'ss') {
-			return new math.expression.node.ConstantNode(5);
-		} else if (node.isSymbolNode && node.name === 'dd') {
-			return new math.expression.node.ConstantNode(8);
-		} else {
-			return node;
-		}
-	});
-	return transformed.toString();
-}
-var node = math.parse('roi_month * ss + dd');
-showNode(node);
-var newexpression = transform(node);*/
-
 function renderGoalData(rows, table) {
 	var type = "goal";
 	var template = $("." + type + "-card table tbody tr");
@@ -199,6 +171,11 @@ function renderFactorData(rows, table) {
 	$("." + type + "-card .detail-btn").click(
 			function() {
 				location.href = type + "_detail.html?id="
+						+ $(this).parent().parent().attr(type + "-id");
+			});
+	$("." + type + "-card .calculate-btn").click(
+			function() {
+				location.href = type + "_calculate.html?id="
 						+ $(this).parent().parent().attr(type + "-id");
 			});
 	$("." + type + "-card .document-btn").click(
