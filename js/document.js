@@ -28,7 +28,7 @@ function bindDocumentUrl() {
 		};
 		util.dao.update(table, data, id, function() {
 			syncDocument(docUrl, docId, function(data_content) {
-				$(".show-content").html(data_content);
+				showImage(data_content);
 			});
 		});
 	});
@@ -44,8 +44,15 @@ function showDocument(type, id) {
 			$(".show-content").html(data_content);
 		});
 	} else {
-		$(".show-content").html(doc);
+		showImage(doc);
 	}
+}
+
+function showImage(doc){
+	$(".show-content").html(doc);
+	$(".show-content").find("img").each(function(index,item){
+		$(item).attr("src","http:"+$(item).attr("src"));
+	});
 }
 
 showDocument(type, id);

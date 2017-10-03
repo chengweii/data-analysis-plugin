@@ -14,10 +14,10 @@ function remind() {
 		util.openNewNotification({
 			type : 'image',
 			iconUrl : 'img/icon.png',
-			title : 'Please review your knowledge',
-			message : 'Experience comes from learning',
+			title : '能力=善于学习+经验积累',
+			message : '请您及时整理业务分析相关的指标、要素。',
 			imageUrl : 'img/review.png',
-			closeTimeout : 20000
+			closeTimeout : 50000
 		});
 		Settings.setValue('remindTime', remindTime);
 	}

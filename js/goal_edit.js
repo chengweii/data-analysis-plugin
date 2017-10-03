@@ -35,4 +35,18 @@ if (opreate == 'edit') {
 	};
 }
 
-$("#save-data").click(save_fn);
+$("#save-data").click(function(){
+	if(checkParams()){
+		save_fn();
+	}
+});
+
+function checkParams(){
+	var checkInfo = util.form.requireCheck();
+	if (checkInfo.hasError) {
+		alert(checkInfo.errMsg);
+		return false;
+	}
+	
+	return true;
+}

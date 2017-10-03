@@ -11,6 +11,11 @@
 <script type="text/javascript" src="js/lib/settings.js"></script>
 <script type="text/javascript" src="js/lib/sqlite.js"></script>
 <script type="text/javascript" src="js/lib/util.js"></script>
+<style>
+.col-lg-6 .row{
+	padding-left:12px;
+}
+</style>
 </head>
 
 <body>
@@ -34,7 +39,7 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">步骤名称</label> <input name="name" type="text"
-								class="form-control name" />
+								class="form-control name require" maxlength="30"  require-msg="步骤名称不能为空" />
 						</div>
 					</div>
 				</div>
@@ -42,7 +47,7 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">步骤内容</label> <textarea name="content" rows="3" cols="20"
-								class="form-control content"></textarea>
+								class="form-control content require" maxlength="100"  require-msg="步骤内容不能为空"></textarea>
 						</div>
 					</div>
 				</div>
@@ -50,7 +55,7 @@
 					<div class="col-md-12">
 						<div class="form-group label-floating">
 							<label class="control-label">注意要点</label> <textarea name="attentions" rows="3" cols="20"
-								class="form-control attentions"></textarea>
+								class="form-control attentions" maxlength="200" ></textarea>
 						</div>
 					</div>
 				</div>
